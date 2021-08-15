@@ -85,3 +85,6 @@ lint/tmp/
 # lint/reports/
 /.idea/
 /repos/
+.router_mapping
+/router_mapping
+router_mapping/
