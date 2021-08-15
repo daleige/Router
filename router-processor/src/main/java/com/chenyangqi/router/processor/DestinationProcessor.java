@@ -132,6 +132,9 @@ public class DestinationProcessor extends AbstractProcessor {
             throw new RuntimeException("Error when writing json", throwable);
         }
         System.out.println(TAG + " >>> end process...");
+
+        //TODO Javapoet使用
+        JavaPoetTest.INSTANCE.test();
         return false;
     }
 

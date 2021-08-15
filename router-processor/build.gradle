@@ -1,5 +1,6 @@
 plugins {
     id 'java'
+    id 'org.jetbrains.kotlin.jvm' version '1.4.20'
 }
 
 //引用发布仓库的maven-push.gradle
@@ -14,5 +15,20 @@ dependencies {
     implementation "com.google.auto.service:auto-service:$auto_service_version"
     annotationProcessor "com.google.auto.service:auto-service:$auto_service_version"
     implementation "com.google.code.gson:gson:$gson_version"
+    implementation "com.squareup:javapoet:$javapoet_version"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+}
+repositories {
+    mavenCentral()
+}
+compileKotlin {
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+}
+compileTestKotlin {
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
 }
 
