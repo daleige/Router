@@ -1,4 +1,4 @@
-include ':router-runtime'
+include ':router-api'
 include ':business-login'
 include ':app'
 include ':router-annotations'
@@ -9,3 +9,6 @@ rootProject.name = "Router"
 //gradle.taskGraph.beforeTask { task ->
 //    println("[all tast]--->" + task.name)
 //}
+include ':business-home'
+include ':business-personal'
+include ':base-common'
