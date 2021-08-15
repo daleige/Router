@@ -4,7 +4,6 @@ import com.squareup.javapoet.JavaFile
 import com.squareup.javapoet.MethodSpec
 import com.squareup.javapoet.TypeName
 import com.squareup.javapoet.TypeSpec
-import com.sun.xml.internal.fastinfoset.util.StringArray
 import javax.lang.model.element.Modifier
 
 /**
@@ -18,7 +17,7 @@ object JavaPoetTest {
         val main: MethodSpec = MethodSpec.methodBuilder("main")
             .addModifiers(Modifier.PUBLIC, Modifier.STATIC)
             .returns(TypeName.VOID::class.java)
-            .addParameter(StringArray::class.java, "args")
+            .addParameter(Array<String>::class.java, "args")
             .addStatement("\$T.out.println(\$S)", System::class.java, "Hello, JavaPoet!")
             .build()
 
@@ -31,4 +30,6 @@ object JavaPoetTest {
         println("Javapoet创建HelloWorld")
         javaFile.writeTo(System.out)
     }
+
+
 }

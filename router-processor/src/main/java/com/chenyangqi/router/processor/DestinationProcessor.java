@@ -36,6 +36,10 @@ public class DestinationProcessor extends AbstractProcessor {
             System.out.println(TAG + "  >>> processingOver...");
             return false;
         }
+        //TODO Javapoet使用
+        System.out.println("999999999999999999999999999");
+        JavaPoetTest.INSTANCE.test();
+
         System.out.println(TAG + "  >>> start process...");
 
         Set<? extends Element> elementsAnnotatedWith = roundEnvironment.getElementsAnnotatedWith(Destination.class);
@@ -132,9 +136,6 @@ public class DestinationProcessor extends AbstractProcessor {
             throw new RuntimeException("Error when writing json", throwable);
         }
         System.out.println(TAG + " >>> end process...");
-
-        //TODO Javapoet使用
-        JavaPoetTest.INSTANCE.test();
         return false;
     }
 
