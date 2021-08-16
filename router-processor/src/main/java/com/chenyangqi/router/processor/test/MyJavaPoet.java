@@ -1,4 +1,4 @@
-package com.chenyangqi.router.processor;
+package com.chenyangqi.router.processor.test;
 
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.JavaFile;
@@ -8,13 +8,9 @@ import com.squareup.javapoet.TypeName;
 import com.squareup.javapoet.TypeSpec;
 
 import java.io.IOException;
-import java.io.Writer;
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.annotation.processing.Filer;
 import javax.lang.model.element.Modifier;
-import javax.tools.JavaFileObject;
 
 public class MyJavaPoet {
     private static final String packageName = "com.chenyangqi.app.javapoet";
@@ -22,13 +18,6 @@ public class MyJavaPoet {
     public static void test(Filer filer) {
         System.out.println("开始生产 Helloworld------");
         String className = "HelloWorld_" + System.currentTimeMillis();
-
-        if (isExitClass(className)) {
-            System.out.println("已存在" + className);
-            return;
-        } else {
-            System.out.println("不存在" + className);
-        }
 
         MethodSpec main = MethodSpec.methodBuilder("main")
                 .addModifiers(Modifier.PUBLIC, Modifier.STATIC)
@@ -46,12 +35,6 @@ public class MyJavaPoet {
                 .build();
         try {
             javaFile.writeTo(filer);
-
-//            JavaFileObject source = filer.createSourceFile(packageName + "." + className);
-//            Writer writer = source.openWriter();
-//            writer.write(javaFile.toString());
-//            writer.flush();
-//            writer.close();
         } catch (IOException e) {
             System.out.println("写入时发生异常！");
             e.printStackTrace();
@@ -101,6 +84,11 @@ public class MyJavaPoet {
         }
     }
 
+    /**
+     * 判断类是否存在
+     * @param name
+     * @return
+     */
     public static boolean isExitClass(String name) {
         try {
             Thread.currentThread().getContextClassLoader().loadClass(name);

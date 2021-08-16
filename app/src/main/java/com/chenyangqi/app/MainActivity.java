@@ -12,7 +12,7 @@ import com.chenyangqi.router_runtime.Router;
 @Destination(url = "router://home_page", description = "首页")
 public class MainActivity extends AppCompatActivity {
 
-    @AutoAssignment
+    @AutoAssignment(name = "default name")
     private String name;
 
     @Override

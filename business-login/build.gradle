@@ -36,6 +36,7 @@ android {
 
 dependencies {
     implementation project(":router-annotations")
+    kapt project(":router-processor")
     implementation project(':router-api')
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation "androidx.core:core-ktx:$core_ktx_version"
@@ -43,5 +44,4 @@ dependencies {
     implementation "com.google.android.material:material:$material_version"
     implementation "androidx.constraintlayout:constraintlayout:$constraintlayout_version"
     implementation project(path: ':base-common')
-    kapt project(":router-processor")
 }
