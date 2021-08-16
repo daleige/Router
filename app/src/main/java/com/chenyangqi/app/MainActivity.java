@@ -5,11 +5,15 @@ import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.chenyangqi.router.annotations.AutoAssignment;
 import com.chenyangqi.router.annotations.Destination;
 import com.chenyangqi.router_runtime.Router;
 
 @Destination(url = "router://home_page", description = "首页")
 public class MainActivity extends AppCompatActivity {
+
+    @AutoAssignment
+    private String name;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

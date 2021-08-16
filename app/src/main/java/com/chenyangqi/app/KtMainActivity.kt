@@ -1,6 +1,7 @@
 package com.chenyangqi.app
 
 import androidx.appcompat.app.AppCompatActivity
+import com.chenyangqi.router.annotations.AutoAssignment
 import com.chenyangqi.router.annotations.Destination
 
 /**
@@ -10,4 +11,9 @@ import com.chenyangqi.router.annotations.Destination
  */
 @Destination(url = "router://page_kt", description = "个人中心")
 class KtMainActivity : AppCompatActivity() {
+
+    @AutoAssignment
+    var age: Int = 0
+
+
 }

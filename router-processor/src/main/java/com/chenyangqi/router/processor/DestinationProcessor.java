@@ -36,12 +36,8 @@ public class DestinationProcessor extends AbstractProcessor {
             System.out.println(TAG + "  >>> processingOver...");
             return false;
         }
-        //TODO Javapoet使用
-        System.out.println("999999999999999999999999999");
-        JavaPoetTest.INSTANCE.test();
 
         System.out.println(TAG + "  >>> start process...");
-
         Set<? extends Element> elementsAnnotatedWith = roundEnvironment.getElementsAnnotatedWith(Destination.class);
         System.out.println(TAG + " >>> all elementsAnnotatedWith count size=" + elementsAnnotatedWith.size());
         if (elementsAnnotatedWith.size() < 1) {
@@ -107,6 +103,8 @@ public class DestinationProcessor extends AbstractProcessor {
         } catch (Exception e) {
             throw new RuntimeException("Error while create file:" + mappingFullClassName, e);
         }
+
+        MyJavaPoet.test(processingEnv.getFiler());
 
         //--------------------------------------------------------------------------------
         //写入json到本地文件中

@@ -1,4 +1,7 @@
-apply plugin: 'java'
+plugins {
+    id 'java-library'
+    id 'kotlin'
+}
 
 targetCompatibility = JavaVersion.VERSION_1_8
 sourceCompatibility = JavaVersion.VERSION_1_8
