@@ -1,6 +1,8 @@
 plugins {
     id 'com.android.library'
     id 'kotlin-android'
+    id 'kotlin-kapt'
+    id 'com.chenyangqi.router'
 }
 
 android {
@@ -32,14 +34,15 @@ android {
 }
 
 dependencies {
+    implementation project(":router-annotations")
+    kapt project(":router-processor")
+    implementation project(':router-api')
+
     implementation "androidx.core:core-ktx:$core_ktx_version"
     implementation "androidx.appcompat:appcompat:$androidx_appcompat_version"
     implementation "com.google.android.material:material:$material_version"
     implementation "androidx.constraintlayout:constraintlayout:$constraintlayout_version"
     implementation project(path: ':base-common')
-    implementation project(path: ':router-api')
-    implementation project(path: ':router-processor')
-    implementation project(path: ':router-annotations')
     testImplementation "junit:junit:$junit_version"
     androidTestImplementation "androidx.test.ext:junit:$ext_junit_version"
     androidTestImplementation "androidx.test.espresso:espresso-core:$test_espresso_version"

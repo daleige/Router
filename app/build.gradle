@@ -38,7 +38,6 @@ android {
 }
 
 dependencies {
-    implementation project(':business-login')
     implementation project(":router-annotations")
     implementation project(':router-api')
     implementation "androidx.appcompat:appcompat:$androidx_appcompat_version"
@@ -49,7 +48,8 @@ dependencies {
     androidTestImplementation "androidx.test.ext:junit:$ext_junit_version"
     androidTestImplementation "androidx.test.espresso:espresso-core:$test_espresso_version"
     implementation project(path: ':business-personal')
-    implementation project(path: ':base-common')
     implementation project(path: ':business-home')
+    implementation project(path: ':business-login')
+    implementation project(path: ':base-common')
     kapt project(":router-processor")
 }

@@ -5,9 +5,9 @@ import com.chenyangqi.base.common.bean.UserInfo
 import com.chenyangqi.router.annotations.ServiceLoader
 
 @ServiceLoader(
-    interfaces = [IGetUserInfo::class,MyTest::class],
+    interfaces = [IGetUserInfo::class],
     singleton = true,
-    defaultImpl = true
+    key = "Login_UserInfoManager"
 )
 class UserInfoManager : IGetUserInfo {
 

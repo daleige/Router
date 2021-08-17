@@ -1,17 +1,19 @@
 package com.chenyangqi.router.processor;
 
 import com.chenyangqi.router.annotations.ServiceLoader;
-import com.chenyangqi.router.processor.test.Utils;
-import com.google.common.collect.ImmutableList;
+import com.chenyangqi.router.processor.bean.ServiceLoaderBean;
 
-import org.jetbrains.annotations.Contract;
-
+import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.Filer;
@@ -25,12 +27,9 @@ import javax.lang.model.element.Element;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.Name;
 import javax.lang.model.element.TypeElement;
-import javax.lang.model.type.DeclaredType;
-import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.ElementFilter;
 import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
-import javax.xml.transform.Transformer;
 
 public class ServiceLoaderProcessor extends AbstractProcessor {
     private final String TAG = this.getClass().getSimpleName();
@@ -38,6 +37,8 @@ public class ServiceLoaderProcessor extends AbstractProcessor {
     private Types mTypeUtils;
     private Messager mMessager;
     private Filer mFiler;
+
+    private final Map<String, ServiceLoaderBean> serviceMap = new HashMap<>();
 
     @Override
     public synchronized void init(ProcessingEnvironment processingEnv) {
@@ -50,37 +51,45 @@ public class ServiceLoaderProcessor extends AbstractProcessor {
 
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
-        if (annotations == null || annotations.size() <= 0) {
-            return false;
-        }
         if (roundEnv.processingOver()) {
             System.out.println(TAG + "  *** processingOver...");
             return false;
         }
 
         Set<? extends Element> elements = roundEnv.getElementsAnnotatedWith(ServiceLoader.class);
-        if (elements == null || elements.size() <= 0) {
+        System.out.println("******************** begin, size="+elements.size());
+        if (elements.size() < 1) {
             return false;
         }
+
         try {
             for (Element element : elements) {
                 final TypeElement typeElement = (TypeElement) element;
                 ServiceLoader serviceLoader = typeElement.getAnnotation(ServiceLoader.class);
                 boolean singleton = serviceLoader.singleton();
-                boolean defaultImpl = serviceLoader.defaultImpl();
+                String key = serviceLoader.key();
                 String realPath = typeElement.getQualifiedName().toString();
-
+                System.out.println("--->>>> realPath"+realPath);
                 List<? extends AnnotationMirror> annotationMirrors = element.getAnnotationMirrors();
                 for (AnnotationMirror am : annotationMirrors) {
                     Map<? extends ExecutableElement, ? extends AnnotationValue> elementValues = am.getElementValues();
                     for (Map.Entry<? extends ExecutableElement, ? extends AnnotationValue> ev : elementValues.entrySet()) {
                         if (ev.getKey().toString().equals("interfaces()")) {
                             System.out.println("--->>>> interfaces=" + ev.getValue());
+                            List<String> parseInterface = parseInterface(ev);
+                            if (parseInterface != null && parseInterface.size() > 0) {
+                                //TODO 这里暂时只考虑一个接口只有一个实现类的情况，只取第一个Class
+                                ServiceLoaderBean bean = new ServiceLoaderBean(parseInterface.get(0), realPath, key, singleton);
+                                serviceMap.put(bean.getInterfaceName(), bean);
+                            }
                         }
                     }
                 }
 
+            }
 
+            for (int i = 0; i < serviceMap.size(); i++) {
+                System.out.println("ServiceLoader--->" + (i + 1) + "=" + serviceMap.size());
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -89,27 +98,33 @@ public class ServiceLoaderProcessor extends AbstractProcessor {
         return false;
     }
 
-    public ExecutableElement getExecutableElement(final TypeElement typeElement,
-                                                  final Name name) {
-        TypeElement te = typeElement;
-        do {
-            te = (TypeElement) processingEnv.getTypeUtils().asElement(te.getSuperclass());
-            if (te != null) {
-                for (ExecutableElement ee : ElementFilter.methodsIn(te.getEnclosedElements())) {
-                    if (name.equals(ee.getSimpleName()) && ee.getParameters().isEmpty()) {
-                        return ee;
-                    }
-                }
+    /**
+     * 解析类似这种{com.chenyangqi.base.common.IGetUserInfo.class, com.chenyangqi.business.MyTest.class}
+     * 转为Class<?>[]
+     *
+     * @param ev
+     */
+    private List<String> parseInterface(Map.Entry<? extends ExecutableElement, ? extends AnnotationValue> ev) {
+        List<String> classNameList = new ArrayList<>();
+        String value = ev.getValue().toString()
+                .replace("{", "")
+                .replace("}", "")
+                .replace(",", "\n")
+                .replace(" ", "");
+        System.out.println("value =" + value);
+        BufferedReader br = new BufferedReader(new InputStreamReader(
+                new ByteArrayInputStream(value.getBytes(StandardCharsets.UTF_8)),
+                StandardCharsets.UTF_8));
+        String line;
+        try {
+            while (((line = br.readLine()) != null)) {
+                classNameList.add(line);
             }
-        } while (te != null);
-        return null;
-    }
-
-    public static TypeElement findEnclosingTypeElement(Element e) {
-        while (e != null && !(e instanceof TypeElement)) {
-            e = e.getEnclosingElement();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
         }
-        return TypeElement.class.cast(e);
+        return classNameList;
     }
 
     @Override
