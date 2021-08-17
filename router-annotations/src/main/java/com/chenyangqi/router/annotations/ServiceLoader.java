@@ -11,7 +11,7 @@ public @interface ServiceLoader {
     /**
      * 实现的接口（或继承的父类）
      */
-    Class[] interfaces();
+    Class<?>[] interfaces();
 
     /**
      * 同一个接口的多个实现类之间，可以通过唯一的key区分。

@@ -4,7 +4,11 @@ import com.chenyangqi.base.common.IGetUserInfo
 import com.chenyangqi.base.common.bean.UserInfo
 import com.chenyangqi.router.annotations.ServiceLoader
 
-@ServiceLoader(interfaces = [IGetUserInfo::class], singleton = true, defaultImpl = true)
+@ServiceLoader(
+    interfaces = [IGetUserInfo::class,MyTest::class],
+    singleton = true,
+    defaultImpl = true
+)
 class UserInfoManager : IGetUserInfo {
 
     override fun getUserInfo(): UserInfo {
