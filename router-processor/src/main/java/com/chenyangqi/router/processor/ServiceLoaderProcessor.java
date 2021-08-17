@@ -2,6 +2,8 @@ package com.chenyangqi.router.processor;
 
 import com.chenyangqi.router.annotations.ServiceLoader;
 import com.chenyangqi.router.processor.bean.ServiceLoaderBean;
+import com.chenyangqi.router.processor.test.JavaPoetTest;
+import com.chenyangqi.router.processor.test.ServiceLoader_1111;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
@@ -49,6 +51,10 @@ public class ServiceLoaderProcessor extends AbstractProcessor {
         mFiler = processingEnv.getFiler();
     }
 
+    /**
+     * 注解处理器中无法直接获取除String和基本类型之外的数据
+     * 需要通过{@link javax.lang.model.element.AnnotationMirror}}获取
+     */
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
         if (roundEnv.processingOver()) {
@@ -57,7 +63,7 @@ public class ServiceLoaderProcessor extends AbstractProcessor {
         }
 
         Set<? extends Element> elements = roundEnv.getElementsAnnotatedWith(ServiceLoader.class);
-        System.out.println("******************** begin, size="+elements.size());
+        System.out.println("******************** begin, size=" + elements.size());
         if (elements.size() < 1) {
             return false;
         }
@@ -69,7 +75,8 @@ public class ServiceLoaderProcessor extends AbstractProcessor {
                 boolean singleton = serviceLoader.singleton();
                 String key = serviceLoader.key();
                 String realPath = typeElement.getQualifiedName().toString();
-                System.out.println("--->>>> realPath"+realPath);
+                System.out.println("--->>>> realPath" + realPath);
+
                 List<? extends AnnotationMirror> annotationMirrors = element.getAnnotationMirrors();
                 for (AnnotationMirror am : annotationMirrors) {
                     Map<? extends ExecutableElement, ? extends AnnotationValue> elementValues = am.getElementValues();
@@ -85,16 +92,16 @@ public class ServiceLoaderProcessor extends AbstractProcessor {
                         }
                     }
                 }
-
             }
 
             for (int i = 0; i < serviceMap.size(); i++) {
                 System.out.println("ServiceLoader--->" + (i + 1) + "=" + serviceMap.size());
             }
+
+            JavaPoetTest.test2(mFiler);
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         return false;
     }
 

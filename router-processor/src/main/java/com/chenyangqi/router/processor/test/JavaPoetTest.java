@@ -8,11 +8,12 @@ import com.squareup.javapoet.TypeName;
 import com.squareup.javapoet.TypeSpec;
 
 import java.io.IOException;
+import java.util.Random;
 
 import javax.annotation.processing.Filer;
 import javax.lang.model.element.Modifier;
 
-public class MyJavaPoet {
+public class JavaPoetTest {
     private static final String packageName = "com.chenyangqi.app.javapoet";
 
     public static void test(Filer filer) {
@@ -86,6 +87,7 @@ public class MyJavaPoet {
 
     /**
      * 判断类是否存在
+     *
      * @param name
      * @return
      */
@@ -95,6 +97,70 @@ public class MyJavaPoet {
             return true;
         } catch (ClassNotFoundException e) {
             return false;
+        }
+    }
+
+
+    /*
+    *
+import com.chenyangqi.router.processor.bean.ServiceLoaderBean;
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class ServiceLoader_1111 {
+
+    public static Map<String, ServiceLoaderBean> get() {
+        Map<String, ServiceLoaderBean> mapping = new HashMap<>();
+
+        ServiceLoaderBean bean1 = new ServiceLoaderBean("111", "222", "33", true);
+        mapping.put(bean1.getInterfaceName(), bean1);
+
+        ServiceLoaderBean bean2 = new ServiceLoaderBean("1112", "2223", "334", true);
+        mapping.put(bean1.getInterfaceName(), bean2);
+
+        return mapping;
+    }
+}
+    * */
+    public static void test2(Filer filer) {
+        try {
+
+            ClassName stringClassName = ClassName.get("java.lang", "String");
+            ClassName serviceLoaderBean = ClassName.get("com.chenyangqi.router.processor.bean", "ServiceLoaderBean");
+            ClassName map = ClassName.get("java.util", "Map");
+            ClassName hashMap = ClassName.get("java.util", "HashMap");
+            TypeName mapOfString = ParameterizedTypeName.get(map, stringClassName, serviceLoaderBean);
+
+            MethodSpec.Builder builder = MethodSpec.methodBuilder("get")
+                    .addModifiers(Modifier.PUBLIC, Modifier.STATIC)
+                    .returns(mapOfString)
+                    .addStatement("$T mapping = new $T<>()", mapOfString, hashMap);
+
+            for (int i = 0; i < 4; i++) {
+                builder.addStatement("$T bean$L = new $T($S, $S, $S, $L)", serviceLoaderBean, i, serviceLoaderBean, "11", "11", "11", true);
+                builder.addStatement("mapping.put(bean$L.getInterfaceName(), bean$L)", i, i);
+            }
+
+            builder.addStatement("return mapping");
+            MethodSpec getMethod = builder.build();
+
+            String className = "ServiceLoader_" + new Random().nextInt(999999) + "_" + System.currentTimeMillis();
+            TypeSpec ServiceLoaderInfo = TypeSpec.classBuilder(className)
+                    .addModifiers(Modifier.PUBLIC)
+                    .addMethod(getMethod)
+                    .build();
+
+            JavaFile javaFile = JavaFile.builder(packageName, ServiceLoaderInfo)
+                    .build();
+            try {
+                System.out.println(javaFile.toString());
+                javaFile.writeTo(filer);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }
