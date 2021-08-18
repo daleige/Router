@@ -1,12 +1,12 @@
-package com.chenyangqi.router.processor.bean;
+package com.chenyangqi.router.processor;
 
-public class ServiceLoaderBean {
+public class ServiceInfo {
     private final String interfaceName;
     private final String realPath;
     private final String key;
     private final boolean singleton;
 
-    public ServiceLoaderBean(String interfaceName, String realPath, String key, boolean singleton) {
+    public ServiceInfo(String interfaceName, String realPath, String key, boolean singleton) {
         this.interfaceName = interfaceName;
         this.realPath = realPath;
         this.key = key;

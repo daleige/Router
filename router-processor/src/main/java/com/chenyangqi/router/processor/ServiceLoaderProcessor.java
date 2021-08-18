@@ -1,9 +1,6 @@
 package com.chenyangqi.router.processor;
 
 import com.chenyangqi.router.annotations.ServiceLoader;
-import com.chenyangqi.router.processor.bean.ServiceLoaderBean;
-import com.chenyangqi.router.processor.test.JavaPoetTest;
-import com.chenyangqi.router.processor.test.ServiceLoader_1111;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
@@ -27,9 +24,7 @@ import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.AnnotationValue;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ExecutableElement;
-import javax.lang.model.element.Name;
 import javax.lang.model.element.TypeElement;
-import javax.lang.model.util.ElementFilter;
 import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
 
@@ -40,7 +35,7 @@ public class ServiceLoaderProcessor extends AbstractProcessor {
     private Messager mMessager;
     private Filer mFiler;
 
-    private final Map<String, ServiceLoaderBean> serviceMap = new HashMap<>();
+    private final Map<String, ServiceInfo> serviceMap = new HashMap<>();
 
     @Override
     public synchronized void init(ProcessingEnvironment processingEnv) {
@@ -86,7 +81,7 @@ public class ServiceLoaderProcessor extends AbstractProcessor {
                             List<String> parseInterface = parseInterface(ev);
                             if (parseInterface != null && parseInterface.size() > 0) {
                                 //TODO 这里暂时只考虑一个接口只有一个实现类的情况，只取第一个Class
-                                ServiceLoaderBean bean = new ServiceLoaderBean(parseInterface.get(0), realPath, key, singleton);
+                                ServiceInfo bean = new ServiceInfo(parseInterface.get(0), realPath, key, singleton);
                                 serviceMap.put(bean.getInterfaceName(), bean);
                             }
                         }
@@ -97,8 +92,8 @@ public class ServiceLoaderProcessor extends AbstractProcessor {
             for (int i = 0; i < serviceMap.size(); i++) {
                 System.out.println("ServiceLoader--->" + (i + 1) + "=" + serviceMap.size());
             }
-
-            JavaPoetTest.test2(mFiler);
+            ServiceInfo b=new ServiceInfo("1","2","3",true);
+            //JavaPoetTest.test2(mFiler);
         } catch (Exception e) {
             e.printStackTrace();
         }

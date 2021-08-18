@@ -1,6 +1,6 @@
 package com.chenyangqi.router.processor.test;
 
-import com.chenyangqi.router.processor.bean.ServiceLoaderBean;
+import com.chenyangqi.router.processor.ServiceInfo;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -19,15 +19,15 @@ public class ServiceLoader_1111 {
 //        return map;
 //    }
 
-    public static Map<String, ServiceLoaderBean> get() {
-        Map<String, ServiceLoaderBean> mapping = new HashMap<>();
-        ServiceLoaderBean bean0 = new ServiceLoaderBean("11", "11", "11", true);
+    public static Map<String, ServiceInfo> get() {
+        Map<String, ServiceInfo> mapping = new HashMap<>();
+        ServiceInfo bean0 = new ServiceInfo("11", "11", "11", true);
         mapping.put(bean0.getInterfaceName(), bean0);
-        ServiceLoaderBean bean1 = new ServiceLoaderBean("11", "11", "11", true);
+        ServiceInfo bean1 = new ServiceInfo("11", "11", "11", true);
         mapping.put(bean1.getInterfaceName(), bean1);
-        ServiceLoaderBean bean2 = new ServiceLoaderBean("11", "11", "11", true);
+        ServiceInfo bean2 = new ServiceInfo("11", "11", "11", true);
         mapping.put(bean2.getInterfaceName(), bean2);
-        ServiceLoaderBean bean3 = new ServiceLoaderBean("11", "11", "11", true);
+        ServiceInfo bean3 = new ServiceInfo("11", "11", "11", true);
         mapping.put(bean3.getInterfaceName(), bean3);
         return mapping;
     }

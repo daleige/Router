@@ -103,7 +103,7 @@ public class JavaPoetTest {
 
     /*
     *
-import com.chenyangqi.router.processor.bean.ServiceLoaderBean;
+import com.chenyangqi.router.processor.ServiceLoaderBean;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -127,7 +127,7 @@ public class ServiceLoader_1111 {
         try {
 
             ClassName stringClassName = ClassName.get("java.lang", "String");
-            ClassName serviceLoaderBean = ClassName.get("com.chenyangqi.router.processor.bean", "ServiceLoaderBean");
+            ClassName serviceLoaderBean = ClassName.get("com.chenyangqi.router.processor", "ServiceLoaderBean");
             ClassName map = ClassName.get("java.util", "Map");
             ClassName hashMap = ClassName.get("java.util", "HashMap");
             TypeName mapOfString = ParameterizedTypeName.get(map, stringClassName, serviceLoaderBean);
